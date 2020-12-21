@@ -73,11 +73,11 @@ object Compose : AppDependency {
     override val version: String = Versions.compose
     override val all: List<String> = listOf(
         "androidx.compose.ui:ui",
-        "androidx.ui:ui-tooling:",
-        "androidx.compose.foundation:foundation:",
-        "androidx.compose.material:material:",
-        "androidx.compose.material:material-icons-core:",
-        "androidx.compose.material:material-icons-extended:"
+        "androidx.ui:ui-tooling",
+        "androidx.compose.foundation:foundation",
+        "androidx.compose.material:material",
+        "androidx.compose.material:material-icons-core",
+        "androidx.compose.material:material-icons-extended"
     )
 }
 
