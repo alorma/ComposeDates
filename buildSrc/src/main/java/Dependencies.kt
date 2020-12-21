@@ -29,10 +29,13 @@ object AndroidSdk {
     const val androidGradlePlugin = "7.0.0-alpha03"
 }
 
-interface AppDependency {
+interface Dependency {
     val version: String
     val all: List<String>
 }
+
+interface AppDependency: Dependency
+interface TestDependency: Dependency
 
 interface GroupDependency {
     val dependencies: List<AppDependency>
@@ -42,6 +45,12 @@ fun DependencyHandler.provide(appDependency: AppDependency) {
     appDependency.all
         .map { name -> "$name:${appDependency.version}" }
         .forEach { dependency -> add("implementation", dependency) }
+}
+
+fun DependencyHandler.provideTest(testDependency: TestDependency) {
+    testDependency.all
+        .map { name -> "$name:${testDependency.version}" }
+        .forEach { dependency -> add("testImplementation", dependency) }
 }
 
 fun DependencyHandler.provide(groupDependency: GroupDependency) {
@@ -92,4 +101,10 @@ object AndroidX : GroupDependency {
             "androidx.core:core-ktx"
         )
     }
+}
+
+object jUnit : TestDependency {
+    override val version: String = Versions.junit
+    override val all: List<String> = listOf("junit:junit")
+
 }

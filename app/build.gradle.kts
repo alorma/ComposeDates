@@ -65,5 +65,5 @@ dependencies {
     provide(Compose)
     provide(AndroidX)
 
-    testImplementation("junit:junit:${Versions.junit}")
+    provideTest(jUnit)
 }
