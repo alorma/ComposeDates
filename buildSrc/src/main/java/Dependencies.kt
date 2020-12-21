@@ -3,6 +3,7 @@ import org.gradle.api.artifacts.dsl.DependencyHandler
 object Versions {
     const val kotlin = "1.4.21"
     const val compose = "1.0.0-alpha09"
+    const val composeUiTooling = "1.0.0-alpha07"
     const val accompanist = "0.3.3.1"
 
     const val junit = "4.13"
@@ -16,7 +17,7 @@ object Versions {
 
     object AndroidX {
         const val core = "1.3.2"
-        const val lifecycle = "2.3.0-rc01"
+        const val lifecycle = "2.2.0"
     }
 
 }
@@ -44,7 +45,10 @@ interface GroupDependency {
 fun DependencyHandler.provide(appDependency: AppDependency) {
     appDependency.all
         .map { name -> "$name:${appDependency.version}" }
-        .forEach { dependency -> add("implementation", dependency) }
+        .forEach { dependency ->
+            println(dependency)
+            add("implementation", dependency)
+        }
 }
 
 fun DependencyHandler.provideTest(testDependency: TestDependency) {
@@ -83,7 +87,7 @@ object Compose : GroupDependency {
     }
 
     object UI : AppDependency {
-        override val version: String = Versions.compose
+        override val version: String = Versions.composeUiTooling
         override val all: List<String> = listOf("androidx.ui:ui-tooling")
     }
 
