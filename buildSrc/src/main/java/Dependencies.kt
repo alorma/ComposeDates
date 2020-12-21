@@ -34,8 +34,8 @@ interface Dependency {
     val all: List<String>
 }
 
-interface AppDependency: Dependency
-interface TestDependency: Dependency
+interface AppDependency : Dependency
+interface TestDependency : Dependency
 
 interface GroupDependency {
     val dependencies: List<AppDependency>
@@ -69,16 +69,37 @@ object Koin : AppDependency {
     )
 }
 
-object Compose : AppDependency {
-    override val version: String = Versions.compose
-    override val all: List<String> = listOf(
-        "androidx.compose.ui:ui",
-        "androidx.ui:ui-tooling",
-        "androidx.compose.foundation:foundation",
-        "androidx.compose.material:material",
-        "androidx.compose.material:material-icons-core",
-        "androidx.compose.material:material-icons-extended"
+object Compose : GroupDependency {
+    override val dependencies: List<AppDependency> = listOf(
+        Base,
+        UI,
+        Material,
+        Foundation
     )
+
+    object Base : AppDependency {
+        override val version: String = Versions.compose
+        override val all: List<String> = listOf("androidx.compose.ui:ui")
+    }
+
+    object UI : AppDependency {
+        override val version: String = Versions.compose
+        override val all: List<String> = listOf("androidx.ui:ui-tooling")
+    }
+
+    object Material : AppDependency {
+        override val version: String = Versions.compose
+        override val all: List<String> = listOf(
+            "androidx.compose.material:material",
+            "androidx.compose.material:material-icons-core",
+            "androidx.compose.material:material-icons-extended"
+        )
+    }
+
+    object Foundation : AppDependency {
+        override val version: String = Versions.compose
+        override val all: List<String> = listOf("androidx.compose.foundation:foundation")
+    }
 }
 
 object AndroidX : GroupDependency {
