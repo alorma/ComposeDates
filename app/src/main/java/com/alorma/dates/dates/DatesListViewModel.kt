@@ -19,8 +19,8 @@ class DatesListViewModel(
 
     init {
         viewModelScope.launch {
-            repeat(10) {
-                delay(1_000)
+            while (true) {
+                delay(10_000)
                 _time.emit(datesListMapper.mapTime(clock.instant()))
             }
         }
