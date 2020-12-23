@@ -4,13 +4,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion(AndroidSdk.compile)
+    compileSdkVersion(30)
 
     defaultConfig {
-        applicationId = "com.alorma.gitskarios"
+        applicationId = "com.alorma.dates"
 
-        minSdkVersion(AndroidSdk.min)
-        targetSdkVersion(AndroidSdk.target)
+        minSdkVersion(23)
+        targetSdkVersion(30)
 
         versionCode = 1
         versionName = "1.0"
@@ -22,8 +22,8 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = Versions.compose
-        kotlinCompilerVersion = "1.4.0"
+        kotlinCompilerExtensionVersion = "1.0.0-alpha09"
+        kotlinCompilerVersion = "1.4.21"
     }
 
     buildTypes {
@@ -61,9 +61,27 @@ dependencies {
     implementation(platform("org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.4.1"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android")
 
-    provide(Koin)
-    provide(Compose)
-    provide(AndroidX)
+    implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.0-rc01")
 
-    provideTest(jUnit)
+    implementation("androidx.core:core-ktx:1.3.2")
+    implementation("androidx.appcompat:appcompat:1.2.0")
+    implementation("com.google.android.material:material:1.2.1")
+
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0")
+
+    implementation("org.koin:koin-android:2.2.1")
+    implementation("org.koin:koin-androidx-scope:2.2.1")
+    implementation("org.koin:koin-androidx-viewmodel:2.2.1")
+    implementation("org.koin:koin-androidx-fragment:2.2.1")
+    implementation("org.koin:koin-androidx-compose:2.2.1")
+    implementation("org.koin:koin-androidx-ext:2.2.1")
+
+    implementation("androidx.compose.ui:ui:1.0.0-alpha09")
+    implementation("androidx.ui:ui-tooling:1.0.0-alpha07")
+    implementation("androidx.compose.foundation:foundation:1.0.0-alpha09")
+    implementation("androidx.compose.material:material:1.0.0-alpha09")
+    implementation("androidx.compose.material:material-icons-core:1.0.0-alpha09")
+    implementation("androidx.compose.material:material-icons-extended:1.0.0-alpha09")
 }
