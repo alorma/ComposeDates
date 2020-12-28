@@ -147,4 +147,17 @@ class TimeDistanceCalculatorTest {
             get { minutes }.isEqualTo(15)
         }
     }
+
+    @Test
+    fun `test calculate more than very over temporal unit after distance`() {
+        val newTime = time.plusHours(23).plusMinutes(135)
+
+        val result = calculator.calculateTimeDistance(newTime)
+
+        expectThat(result).isA<TimeDistanceCalculator.TimeCalculation.Elapsed.After>().and {
+            get { days }.isEqualTo(1)
+            get { hours }.isEqualTo(1)
+            get { minutes }.isEqualTo(15)
+        }
+    }
 }
