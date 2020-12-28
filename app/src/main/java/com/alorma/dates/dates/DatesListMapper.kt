@@ -3,13 +3,20 @@ package com.alorma.dates.dates
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatterBuilder
 import java.time.temporal.ChronoField
+import java.time.temporal.Temporal
 
 class DatesListMapper {
 
-    fun mapTime(instant: Instant): String {
-        val time = LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
+    fun map(instant: Temporal, dates: List<Temporal>): DatesState = DatesState.Loaded(
+        currentTime = mapTime(instant = instant),
+        dates = mapDates(dates)
+    )
+
+    private fun mapTime(instant: Temporal): String {
+        val time = LocalDateTime.ofInstant(Instant.from(instant), ZoneId.systemDefault())
 
         val formatter = DateTimeFormatterBuilder()
             .appendValue(ChronoField.HOUR_OF_DAY, 2)
@@ -19,5 +26,11 @@ class DatesListMapper {
 
         return formatter.format(time)
     }
+
+    private fun mapDates(dates: List<Temporal>) =
+        dates.map { temporal -> mapDate(temporal) }
+
+    private fun mapDate(localDate: Temporal): String =
+        DateTimeFormatter.ISO_LOCAL_DATE.format(localDate)
 
 }
