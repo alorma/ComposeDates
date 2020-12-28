@@ -2,15 +2,13 @@ package com.alorma.dates.domain
 
 import java.time.*
 import java.time.temporal.ChronoField
-import java.time.temporal.ChronoUnit
-import java.time.temporal.TemporalField
 
 class TimeDistanceCalculator(private val clock: Clock) {
 
     private val clockTime: LocalDateTime = LocalDateTime.now(clock)
 
     fun calculateTimeDistance(localDateTime: LocalDateTime): TimeCalculation {
-        var period = Period.between(localDateTime.toLocalDate(), clockTime.toLocalDate()).let {
+        val period = Period.between(localDateTime.toLocalDate(), clockTime.toLocalDate()).let {
             if (it.isNegative) {
                 it.negated()
             } else {
@@ -18,19 +16,17 @@ class TimeDistanceCalculator(private val clock: Clock) {
             }
         }
 
-        val years = period.years.toLong()
-        period = period.minusYears(years)
-        val months = period.months.toLong()
-        period = period.minusMonths(months)
-        val days = period.days.toLong()
+        val years = period.years
+        val months = period.months
+        val days = period.days
 
         val duration = Duration.between(localDateTime.toLocalTime(), clockTime.toLocalTime()).abs()
 
         val midNightPlus = LocalTime.MIDNIGHT.plus(duration)
 
-        val hours = midNightPlus.get(ChronoField.HOUR_OF_DAY).toLong()
-        val minutes = midNightPlus.get(ChronoField.MINUTE_OF_HOUR).toLong()
-        val seconds = midNightPlus.get(ChronoField.SECOND_OF_MINUTE).toLong()
+        val hours = midNightPlus.get(ChronoField.HOUR_OF_DAY)
+        val minutes = midNightPlus.get(ChronoField.MINUTE_OF_HOUR)
+        val seconds = midNightPlus.get(ChronoField.SECOND_OF_MINUTE)
 
         return when {
             localDateTime.isEqual(clockTime) -> {
@@ -49,30 +45,30 @@ class TimeDistanceCalculator(private val clock: Clock) {
     sealed class TimeCalculation {
         object Now : TimeCalculation()
         sealed class Elapsed : TimeCalculation() {
-            abstract val years: Long
-            abstract val months: Long
-            abstract val days: Long
+            abstract val years: Int
+            abstract val months: Int
+            abstract val days: Int
 
-            abstract val hours: Long
-            abstract val minutes: Long
-            abstract val seconds: Long
+            abstract val hours: Int
+            abstract val minutes: Int
+            abstract val seconds: Int
 
             data class Before(
-                override val years: Long,
-                override val months: Long,
-                override val days: Long,
-                override val hours: Long,
-                override val minutes: Long,
-                override val seconds: Long
+                override val years: Int,
+                override val months: Int,
+                override val days: Int,
+                override val hours: Int,
+                override val minutes: Int,
+                override val seconds: Int
             ) : Elapsed()
 
             data class After(
-                override val years: Long,
-                override val months: Long,
-                override val days: Long,
-                override val hours: Long,
-                override val minutes: Long,
-                override val seconds: Long
+                override val years: Int,
+                override val months: Int,
+                override val days: Int,
+                override val hours: Int,
+                override val minutes: Int,
+                override val seconds: Int
             ) : Elapsed()
         }
     }
