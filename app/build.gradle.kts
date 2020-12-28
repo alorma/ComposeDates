@@ -87,4 +87,7 @@ dependencies {
     implementation("androidx.compose.material:material:1.0.0-alpha09")
     implementation("androidx.compose.material:material-icons-core:1.0.0-alpha09")
     implementation("androidx.compose.material:material-icons-extended:1.0.0-alpha09")
+
+    testImplementation("junit:junit:4.13.1")
+    testImplementation("io.strikt:strikt-core:0.28.1")
 }
