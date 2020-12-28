@@ -1,17 +1,22 @@
 package com.alorma.dates.domain
 
-import java.time.Clock
-import java.time.Duration
-import java.time.LocalDateTime
-import java.time.Period
+import java.time.*
+import java.time.temporal.ChronoField
+import java.time.temporal.ChronoUnit
+import java.time.temporal.TemporalField
 
 class TimeDistanceCalculator(private val clock: Clock) {
 
     private val clockTime: LocalDateTime = LocalDateTime.now(clock)
 
     fun calculateTimeDistance(localDateTime: LocalDateTime): TimeCalculation {
-        var period = Period.between(localDateTime.toLocalDate(), clockTime.toLocalDate())
-        var duration = Duration.between(localDateTime.toLocalTime(), clockTime.toLocalTime())
+        var period = Period.between(localDateTime.toLocalDate(), clockTime.toLocalDate()).let {
+            if (it.isNegative) {
+                it.negated()
+            } else {
+                it
+            }
+        }
 
         val years = period.years.toLong()
         period = period.minusYears(years)
@@ -19,11 +24,13 @@ class TimeDistanceCalculator(private val clock: Clock) {
         period = period.minusMonths(months)
         val days = period.days.toLong()
 
-        val hours = duration.toHours()
-        duration = duration.minusHours(hours)
-        val minutes = duration.toMinutes()
-        duration = duration.minusMinutes(minutes)
-        val seconds = duration.seconds
+        val duration = Duration.between(localDateTime.toLocalTime(), clockTime.toLocalTime()).abs()
+
+        val midNightPlus = LocalTime.MIDNIGHT.plus(duration)
+
+        val hours = midNightPlus.get(ChronoField.HOUR_OF_DAY).toLong()
+        val minutes = midNightPlus.get(ChronoField.MINUTE_OF_HOUR).toLong()
+        val seconds = midNightPlus.get(ChronoField.SECOND_OF_MINUTE).toLong()
 
         return when {
             localDateTime.isEqual(clockTime) -> {

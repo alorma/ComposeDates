@@ -4,10 +4,8 @@ import org.junit.Test
 import strikt.api.expectThat
 import strikt.assertions.isA
 import strikt.assertions.isEqualTo
-import java.time.Clock
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneOffset
+import java.time.*
+import java.time.temporal.ChronoUnit
 
 class TimeDistanceCalculatorTest {
 
@@ -88,9 +86,9 @@ class TimeDistanceCalculatorTest {
         val result = calculator.calculateTimeDistance(newTime)
 
         expectThat(result).isA<TimeDistanceCalculator.TimeCalculation.Elapsed.After>().and {
-            get { hours }.isEqualTo(-5)
-            get { minutes }.isEqualTo(-6)
-            get { seconds }.isEqualTo(-10)
+            get { hours }.isEqualTo(5)
+            get { minutes }.isEqualTo(6)
+            get { seconds }.isEqualTo(10)
         }
     }
 
@@ -120,9 +118,9 @@ class TimeDistanceCalculatorTest {
         val result = calculator.calculateTimeDistance(newTime)
 
         expectThat(result).isA<TimeDistanceCalculator.TimeCalculation.Elapsed.After>().and {
-            get { years }.isEqualTo(-1)
-            get { months }.isEqualTo(-2)
-            get { days }.isEqualTo(-3)
+            get { years }.isEqualTo(1)
+            get { months }.isEqualTo(2)
+            get { days }.isEqualTo(3)
         }
     }
 
@@ -145,10 +143,8 @@ class TimeDistanceCalculatorTest {
         val result = calculator.calculateTimeDistance(newTime)
 
         expectThat(result).isA<TimeDistanceCalculator.TimeCalculation.Elapsed.After>().and {
-            get { hours }.isEqualTo(-2)
-            get { minutes }.isEqualTo(-15)
+            get { hours }.isEqualTo(2)
+            get { minutes }.isEqualTo(15)
         }
     }
-
-
 }
