@@ -1,40 +1,30 @@
 package com.alorma.dates.dates
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import com.alorma.dates.R
+import com.vanpra.composematerialdialogs.MaterialDialog
+import com.vanpra.composematerialdialogs.datetime.datepicker
 import org.koin.androidx.compose.getViewModel
+import java.time.LocalDate
 
 @Composable
 fun DateListScreen(datesListViewModel: DatesListViewModel = getViewModel()) {
     val state = datesListViewModel.state.collectAsState()
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    when (val current = state.value) {
-                        DatesState.Loading -> Text(text = stringResource(id = R.string.app_name))
-                        is DatesState.Loaded -> Text(text = current.currentTime)
-                    }
-                }
-            )
-        }
-    ) {
 
-        when (val actualState = state.value) {
-            DatesState.Loading -> DatesLoading()
-            is DatesState.Loaded -> DatesLoaded(actualState)
+    when (val actualState = state.value) {
+        DatesState.Loading -> DatesLoading()
+        is DatesState.Loaded -> DatesLoaded(actualState) { date ->
+            datesListViewModel.add(date)
         }
     }
 }
@@ -51,12 +41,34 @@ fun DatesLoading() {
 }
 
 @Composable
-fun DatesLoaded(state: DatesState.Loaded) {
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
+fun DatesLoaded(
+    state: DatesState.Loaded,
+    onDateSelected: (LocalDate) -> Unit
+) {
+    val dateDialog = MaterialDialog()
+
+    dateDialog.build {
+        datepicker { date -> onDateSelected(date) }
+    }
+
+    Scaffold(
+        topBar = {
+            TopAppBar(title = { Text(text = state.currentTime) })
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = {
+                dateDialog.show()
+            }) {
+                Image(imageVector = Icons.Filled.Add)
+            }
+        }
     ) {
-        items(items = state.dates, itemContent = { item ->
-            Text(text = item)
-        })
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            items(items = state.dates, itemContent = { item ->
+                Text(text = item)
+            })
+        }
     }
 }

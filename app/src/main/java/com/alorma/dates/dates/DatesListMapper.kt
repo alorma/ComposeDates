@@ -19,6 +19,12 @@ class DatesListMapper {
         val time = LocalDateTime.ofInstant(Instant.from(instant), ZoneId.systemDefault())
 
         val formatter = DateTimeFormatterBuilder()
+            .appendValue(ChronoField.DAY_OF_MONTH, 2)
+            .appendLiteral('/')
+            .appendValue(ChronoField.MONTH_OF_YEAR, 2)
+            .appendLiteral('/')
+            .appendValue(ChronoField.YEAR, 4)
+            .appendLiteral(" ")
             .appendValue(ChronoField.HOUR_OF_DAY, 2)
             .appendLiteral(':')
             .appendValue(ChronoField.MINUTE_OF_HOUR, 2)

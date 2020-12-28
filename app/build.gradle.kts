@@ -88,6 +88,9 @@ dependencies {
     implementation("androidx.compose.material:material-icons-core:1.0.0-alpha09")
     implementation("androidx.compose.material:material-icons-extended:1.0.0-alpha09")
 
+    implementation("com.vanpra.compose-material-dialogs:core:0.2.8")
+    implementation("com.vanpra.compose-material-dialogs:datetime:0.2.8")
+
     testImplementation("junit:junit:4.13.1")
     testImplementation("io.strikt:strikt-core:0.28.1")
 }
