@@ -1,4 +1,4 @@
-package com.alorma.dates.dates
+package com.alorma.dates.ui.dates
 
 sealed class DatesState {
     object Loading : DatesState()

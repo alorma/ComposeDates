@@ -1,4 +1,4 @@
-package com.alorma.dates.dates
+package com.alorma.dates.ui.dates
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

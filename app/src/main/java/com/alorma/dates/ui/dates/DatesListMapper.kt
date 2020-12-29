@@ -1,4 +1,4 @@
-package com.alorma.dates.dates
+package com.alorma.dates.ui.dates
 
 import java.time.Instant
 import java.time.LocalDateTime
