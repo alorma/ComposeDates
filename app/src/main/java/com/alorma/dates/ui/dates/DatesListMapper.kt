@@ -1,7 +1,9 @@
 package com.alorma.dates.ui.dates
 
+import com.alorma.dates.data.room.DateEntity
 import java.time.Instant
 import java.time.LocalDateTime
+import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatterBuilder
@@ -10,33 +12,20 @@ import java.time.temporal.Temporal
 
 class DatesListMapper {
 
-    fun map(instant: Temporal, dates: List<Temporal>): DatesState = DatesState.Loaded(
-        currentTime = mapTime(instant = instant),
+    fun map(dates: List<DateEntity>): DatesState = DatesState.Loaded(
         dates = mapDates(dates)
     )
 
-    private fun mapTime(instant: Temporal): String {
-        val time = LocalDateTime.ofInstant(Instant.from(instant), ZoneId.systemDefault())
-
-        val formatter = DateTimeFormatterBuilder()
-            .appendValue(ChronoField.DAY_OF_MONTH, 2)
-            .appendLiteral('/')
-            .appendValue(ChronoField.MONTH_OF_YEAR, 2)
-            .appendLiteral('/')
-            .appendValue(ChronoField.YEAR, 4)
-            .appendLiteral(" ")
-            .appendValue(ChronoField.HOUR_OF_DAY, 2)
-            .appendLiteral(':')
-            .appendValue(ChronoField.MINUTE_OF_HOUR, 2)
-            .toFormatter()
-
-        return formatter.format(time)
+    private fun mapDates(dates: List<DateEntity>): List<DateItem> = dates.map { dateEntity ->
+        DateItem(
+            title = dateEntity.title,
+            date = mapDate(dateEntity.date),
+        )
     }
 
-    private fun mapDates(dates: List<Temporal>) =
-        dates.map { temporal -> mapDate(temporal) }
-
-    private fun mapDate(localDate: Temporal): String =
-        DateTimeFormatter.ISO_LOCAL_DATE.format(localDate)
+    fun mapDate(dateTime: OffsetDateTime): String {
+        val zoned = dateTime.toLocalDateTime().atZone(ZoneId.systemDefault())
+        return DateTimeFormatter.ISO_LOCAL_DATE.format(zoned)
+    }
 
 }

@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     kotlin("android")
+    kotlin("kapt")
 }
 
 android {
@@ -15,6 +16,14 @@ android {
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                argument("room.schemaLocation", "$projectDir/schemas")
+                argument("room.incremental", "true")
+                argument("room.expandProjection", "true")
+            }
+        }
     }
 
     buildFeatures {
@@ -90,6 +99,12 @@ dependencies {
 
     implementation("com.vanpra.compose-material-dialogs:core:0.2.8")
     implementation("com.vanpra.compose-material-dialogs:datetime:0.2.8")
+
+    implementation("androidx.room:room-runtime:2.2.6")
+    kapt("androidx.room:room-compiler:2.2.6")
+
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation("androidx.room:room-ktx:2.2.6")
 
     testImplementation("junit:junit:4.13.1")
     testImplementation("io.strikt:strikt-core:0.28.1")

@@ -9,9 +9,12 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Providers
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.alorma.dates.R
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.datepicker
 import org.koin.androidx.compose.getViewModel
@@ -43,7 +46,7 @@ fun DatesLoading() {
 @Composable
 fun DatesLoaded(
     state: DatesState.Loaded,
-    onDateSelected: (LocalDate) -> Unit
+    onDateSelected: (LocalDate) -> Unit,
 ) {
     val dateDialog = MaterialDialog()
 
@@ -53,7 +56,7 @@ fun DatesLoaded(
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text(text = state.currentTime) })
+            TopAppBar(title = { Text(text = stringResource(id = R.string.app_name)) })
         },
         floatingActionButton = {
             FloatingActionButton(onClick = {
@@ -67,7 +70,12 @@ fun DatesLoaded(
             modifier = Modifier.fillMaxSize(),
         ) {
             items(items = state.dates, itemContent = { item ->
-                Text(text = item)
+                Column {
+                    Text(text = item.title)
+                    Providers(AmbientContentAlpha provides ContentAlpha.medium) {
+                        Text(text = item.date)
+                    }
+                }
             })
         }
     }

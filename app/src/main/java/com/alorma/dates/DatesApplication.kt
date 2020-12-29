@@ -1,6 +1,7 @@
 package com.alorma.dates
 
 import android.app.Application
+import com.alorma.dates.di.DataModule
 import com.alorma.dates.di.DatesModule
 import com.alorma.dates.di.MappersModule
 import com.alorma.dates.di.ViewModelsModule
@@ -15,6 +16,7 @@ class DatesApplication : Application() {
             androidContext(this@DatesApplication)
             modules(
                 listOf(
+                    DataModule(),
                     DatesModule(),
                     MappersModule(),
                     ViewModelsModule()

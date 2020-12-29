@@ -2,19 +2,21 @@ package com.alorma.dates.ui.dates
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.alorma.dates.data.room.DateEntity
+import com.alorma.dates.data.room.DatesDao
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import java.time.Clock
 import java.time.LocalDate
+import java.time.LocalTime
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 
 class DatesListViewModel(
-    private val clock: Clock,
-    private val datesListMapper: DatesListMapper
+    private val datesListMapper: DatesListMapper,
+    private val datesDao: DatesDao,
 ) : ViewModel() {
-
-    private val dates: MutableList<LocalDate> = mutableListOf()
 
     private val _state: MutableStateFlow<DatesState> = MutableStateFlow(
         DatesState.Loading
@@ -23,11 +25,10 @@ class DatesListViewModel(
 
     init {
         viewModelScope.launch {
-            delay(3_000)
             while (true) {
-                val instant = clock.instant()
+                val dates = datesDao.getAll()
                 _state.emit(
-                    datesListMapper.map(instant, dates)
+                    datesListMapper.map(dates)
                 )
                 delay(5_000)
             }
@@ -35,7 +36,14 @@ class DatesListViewModel(
     }
 
     fun add(date: LocalDate) {
-        dates.add(date)
+        viewModelScope.launch {
+            val offsetDateTime = OffsetDateTime.of(date, LocalTime.NOON, ZoneOffset.UTC)
+            val entity = DateEntity(
+                date = offsetDateTime,
+                title = "Date #${(0..100).random()}"
+            )
+            datesDao.insert(entity)
+        }
     }
 
 }
