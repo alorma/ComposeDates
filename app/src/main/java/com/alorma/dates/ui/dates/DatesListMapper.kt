@@ -25,7 +25,7 @@ class DatesListMapper {
 
     fun mapDate(dateTime: OffsetDateTime): String {
         val zoned = dateTime.toLocalDateTime().atZone(ZoneId.systemDefault())
-        return DateTimeFormatter.ISO_LOCAL_DATE.format(zoned)
+        return DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(zoned)
     }
 
 }
