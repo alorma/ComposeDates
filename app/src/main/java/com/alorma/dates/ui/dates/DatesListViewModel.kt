@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alorma.dates.data.room.DateEntity
 import com.alorma.dates.data.room.DatesDao
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalTime
@@ -25,12 +25,10 @@ class DatesListViewModel(
 
     init {
         viewModelScope.launch {
-            while (true) {
-                val dates = datesDao.getAll()
+            datesDao.getAll().collect { dates ->
                 _state.emit(
                     datesListMapper.map(dates)
                 )
-                delay(5_000)
             }
         }
     }
