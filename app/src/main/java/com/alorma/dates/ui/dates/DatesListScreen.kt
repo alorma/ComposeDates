@@ -9,12 +9,12 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Providers
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.alorma.dates.R
+import com.alorma.dates.ui.mediumEmphasis
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.datepicker
 import org.koin.androidx.compose.getViewModel
@@ -72,9 +72,7 @@ fun DatesLoaded(
             items(items = state.dates, itemContent = { item ->
                 Column {
                     Text(text = item.title)
-                    Providers(AmbientContentAlpha provides ContentAlpha.medium) {
-                        Text(text = item.date)
-                    }
+                    mediumEmphasis { Text(text = item.date) }
                 }
             })
         }
