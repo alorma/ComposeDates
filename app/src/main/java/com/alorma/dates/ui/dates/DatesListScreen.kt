@@ -14,7 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.alorma.dates.R
-import com.alorma.dates.ui.mediumEmphasis
+import com.alorma.dates.ui.MediumEmphasis
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.datepicker
 import org.koin.androidx.compose.getViewModel
@@ -72,7 +72,7 @@ fun DatesLoaded(
             items(items = state.dates, itemContent = { item ->
                 Column {
                     Text(text = item.title)
-                    mediumEmphasis { Text(text = item.date) }
+                    MediumEmphasis { Text(text = item.date) }
                 }
             })
         }

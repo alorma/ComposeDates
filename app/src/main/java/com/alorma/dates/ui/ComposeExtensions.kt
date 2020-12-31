@@ -7,8 +7,18 @@ import androidx.compose.runtime.ProvidableAmbient
 import androidx.compose.runtime.Providers
 
 @Composable
+fun HighEmphasis(content: @Composable () -> Unit) {
+    ProvideAmbient(AmbientContentAlpha, ContentAlpha.high, content)
+}
+
+@Composable
 fun MediumEmphasis(content: @Composable () -> Unit) {
     ProvideAmbient(AmbientContentAlpha, ContentAlpha.medium, content)
+}
+
+@Composable
+fun DisabledEmphasis(content: @Composable () -> Unit) {
+    ProvideAmbient(AmbientContentAlpha, ContentAlpha.disabled, content)
 }
 
 @Composable
